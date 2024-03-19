@@ -9,6 +9,8 @@ public:
     void setNickname(std::string& nickname);
     void setX(int x);
     void setY(int y);
+    int getX();
+    int getY();
     std::string getNickname();
 
 private:

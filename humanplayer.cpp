@@ -2,6 +2,13 @@
 #include <windows.h>
 #include "labyrinth.h"
 
+int humanPlayer::getX() {
+    return pX;
+}
+int humanPlayer::getY() {
+    return pY;
+}
+
 void humanPlayer::setNickname(std::string& nickname) {
     this->nickname = nickname;
 }

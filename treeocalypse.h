@@ -3,8 +3,6 @@
 
 class Treeocalypse:public Labyrinth {
 public:
-    bool isGameOver() override;
     void planting();
-   // std::vector<std::vector<char>> plantedTrees;
-
+    void findWinnablePath(int x, int y);
 };

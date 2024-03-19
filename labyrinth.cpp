@@ -9,7 +9,7 @@
 #include <windows.h>
 #include <algorithm>
 #include <queue>
-
+#include <iomanip>
 constexpr int dx[] = {0, 1, 0, -1};
 constexpr int dy[] = {-1, 0, 1, 0};
 
@@ -36,18 +36,15 @@ void Labyrinth::play() {
      }
 }
 
-[[noreturn]] void Labyrinth::launchTreeocalypse() {
-
-    auto cut_surrounding_trees = [&](int x, int y){
+void Labyrinth:: cut(int x,int y){
         maze[x-1][y] = '.';
-        maze[x-1][y-1] = '.';
-        maze[x-1][y+1] = '.';
         maze[x+1][y] = '.';
-        maze[x+1][y-1] = '.';
-        maze[x +1][y +1] = '.';
         maze[x][y -1] = '.';
         maze[x][y +1] = '.';
-    };
+}
+
+[[noreturn]] void Labyrinth::launchTreeocalypse() {
+
     auto generateNumber = [](int minValue, int maxValue) {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -68,21 +65,29 @@ void Labyrinth::play() {
 
     tMaze.maze[startX][startY] = '@';
     tMaze.generateGrid(startX,startY);
-    tMaze.draw();
-    cut_surrounding_trees(startX, startY);
-    tMaze.draw();
+    tMaze.cut(startX,startY);
     tMaze.generateExits(startX, startY);
+    tMaze.findWinnablePath(startX, startY);
     tMaze.draw();
 
     player.setX(startX);
     player.setY(startY);
     while(true){
         if(player.move(tMaze.maze)){
+            if(isBorderCell(player.getX(), player.getY())){
+                system("cls");
+                Sleep(500);
+                std::cout<<"Congratulations "<<player.getNickname()<<", you won the game!\n";
+                Sleep(3000);
+                exit(0);
+            }
             clearConsole();
             Sleep(100);
             tMaze.draw();
         }
-        //tMaze.planting();
+
+       tMaze.planting();
+
     }
 }
 
@@ -119,10 +124,6 @@ void Labyrinth::generateGrid(int x,int y) {
     }
 }
 
-bool Labyrinth::isGameOver() {
-
-}
-
 void Labyrinth::draw() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
@@ -138,26 +139,25 @@ void Labyrinth::draw() {
         for (char cell : row) {
             if (cell == '#') {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
-                std::cout << '#';
+                std::cout << std::setw(2) << '#';
             } else if (cell == '@') {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-                std::cout << '@';
+                std::cout << std::setw(2) << '@';
             }
             else {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
-                std::cout << '.';
+                std::cout << std::setw(2) << '.';
             }
         }
         std::cout << std::endl;
     }
 }
 
+bool Labyrinth::isBorderCell(int x, int y) {
+  return x ==0 || y==0 || x == mazeWidth - 1 || y == mazeHeight -1;
+}
+
 void Labyrinth::generateExits(int x, int y) {
-
-    auto isBorder = [](int x, int y){
-            return y == 0 || y == mazeWidth - 1 || x == 0 || x == mazeHeight - 1;
-
-    };
 
    for(int i = 0; i< mazeWidth;++i)
        maze[0][i] = '#';
@@ -174,22 +174,21 @@ void Labyrinth::generateExits(int x, int y) {
     std::vector<std::pair<int,int>> exits;
 
     q.emplace(x, y);
-    int count = 0;
 
     while (!q.empty()) {
         auto [row, col] = q.front();
         q.pop();
         visited[row][col] = '1';
 
-        if(count == 2){
+        if(exitCount == 2){
             break;
         }
 
         for(int i =0 ; i < 4 ; ++i ){
             int n_row = row + dx[i];
             int n_col = col + dy[i];
-         if(isBorder(n_row,n_col)){
-             ++count;
+         if(isBorderCell(n_row,n_col)){
+             ++exitCount;
              exits.emplace_back(n_row, n_col);
              continue;
          }
