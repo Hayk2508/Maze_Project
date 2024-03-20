@@ -6,10 +6,10 @@ public:
     virtual void play();
     virtual void draw();
     static void clearConsole();
-    void start();
-    void showInfo();
-    void Credits();
-    void play_music();
+    void start () const;
+    void showInfo() const;
+    void Credits() const;
+    void play_music() const;
 };
 
 
