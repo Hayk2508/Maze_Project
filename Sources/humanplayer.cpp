@@ -1,6 +1,6 @@
-#include "humanplayer.h"
+#include "../Includes/humanplayer.h"
 #include <windows.h>
-#include "labyrinth.h"
+#include "../Includes/labyrinth.h"
 
 int humanPlayer::getX() {
     return pX;

@@ -1,7 +1,7 @@
-#include "labyrinth.h"
-#include "treeocalypse.h"
-#include "welcometothejungle.h"
-#include "humanplayer.h"
+#include "../Includes/labyrinth.h"
+#include "../Includes/treeocalypse.h"
+#include "../Includes/welcometothejungle.h"
+#include "../Includes/humanplayer.h"
 #include <iostream>
 #include <memory>
 #include <random>
@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <queue>
 #include <iomanip>
+
 constexpr int dx[] = {0, 1, 0, -1};
 constexpr int dy[] = {-1, 0, 1, 0};
 
@@ -36,14 +37,21 @@ void Labyrinth::play() {
      }
 }
 
-void Labyrinth:: cut(int x,int y){
+//void Labyrinth:: cut(int x,int y){
+//        maze[x-1][y] = '.';
+//        maze[x+1][y] = '.';
+//        maze[x][y -1] = '.';
+//        maze[x][y +1] = '.';
+//}
+
+[[noreturn]] void Labyrinth::launchTreeocalypse() {
+
+    auto cut = [&](int x, int y){
         maze[x-1][y] = '.';
         maze[x+1][y] = '.';
         maze[x][y -1] = '.';
         maze[x][y +1] = '.';
-}
-
-[[noreturn]] void Labyrinth::launchTreeocalypse() {
+    };
 
     auto generateNumber = [](int minValue, int maxValue) {
         std::random_device rd;
@@ -65,13 +73,14 @@ void Labyrinth:: cut(int x,int y){
 
     tMaze.maze[startX][startY] = '@';
     tMaze.generateGrid(startX,startY);
-    tMaze.cut(startX,startY);
+    cut(startX,startY);
     tMaze.generateExits(startX, startY);
     tMaze.findWinnablePath(startX, startY);
     tMaze.draw();
 
     player.setX(startX);
     player.setY(startY);
+    //play_music();
     while(true){
         if(player.move(tMaze.maze)){
             if(isBorderCell(player.getX(), player.getY())){
@@ -85,9 +94,7 @@ void Labyrinth:: cut(int x,int y){
             Sleep(100);
             tMaze.draw();
         }
-
        tMaze.planting();
-
     }
 }
 
@@ -139,14 +146,14 @@ void Labyrinth::draw() {
         for (char cell : row) {
             if (cell == '#') {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
-                std::cout << std::setw(2) << '#';
+                std::cout << std::setw(3) << '#';
             } else if (cell == '@') {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-                std::cout << std::setw(2) << '@';
+                std::cout << std::setw(3) << '@';
             }
             else {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
-                std::cout << std::setw(2) << '.';
+                std::cout << std::setw(3) << '.';
             }
         }
         std::cout << std::endl;

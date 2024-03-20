@@ -11,7 +11,7 @@ public:
     Labyrinth();
 protected:
     void launchWelcomeToTheJungle();
-    void cut(int x,int y);
+    //void cut(int x,int y);
     bool isBorderCell(int x, int y);
     [[noreturn]] void launchTreeocalypse();
     void draw() override;

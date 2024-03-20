@@ -1,4 +1,4 @@
-#include "treeocalypse.h"
+#include "../Includes/treeocalypse.h"
 #include <queue>
 #include <vector>
 
@@ -36,8 +36,9 @@ void Treeocalypse::findWinnablePath(const int x, const int y) {
         }
 
     }
+}
 
-
+void Treeocalypse::growth() {
 
 }
 
