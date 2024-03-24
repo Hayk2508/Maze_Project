@@ -1,14 +1,15 @@
 #pragma once
 #include "labyrinth.h"
+#include "tree.h"
+#include "humanplayer.h"
 
 class Treeocalypse:public Labyrinth {
 public:
-    Treeocalypse(){
-        distances.resize(mazeHeight,std::vector<int>(mazeWidth,0));
-    }
-    void growth();
+    Treeocalypse();
     void planting();
-    void setDistancesFromPlayer(int x, int y,std::vector<std::vector<char>>& grid);
+    void setDistancesFromPlayer(humanPlayer& p);
 private:
+    bool isWinnable();
     std::vector<std::vector<int>> distances;
+    std::vector<Tree> plantedTrees;
 };

@@ -11,13 +11,12 @@ public:
     Labyrinth();
 protected:
     static void launchWelcomeToTheJungle();
-    //void cut(int x,int y);
     static bool isBorderCell(int x, int y);
     [[noreturn]]  void launchTreeocalypse();
     void draw() override;
     void generateExits(int x, int y);
 
-    int exitCount{};
+    std::vector<std::pair<int,int>> exits;
    static  constexpr int  mazeWidth = 20;
    static  constexpr int  mazeHeight = 20;
    std::vector<std::vector<char>> maze;

@@ -103,8 +103,15 @@ void Labyrinth::play() {
             clearConsole();
             Sleep(100);
             tMaze.draw();
+
+            tMaze.setDistancesFromPlayer(player);
+            tMaze.planting();
+
+            clearConsole();
+            Sleep(100);
+            tMaze.draw();
         }
-       tMaze.planting();
+
     }
 }
 
@@ -189,7 +196,6 @@ void Labyrinth::generateExits(int x, int y) {
     std::queue<std::pair<int, int>> q;
     std::vector<std::vector<int>> visited
     (mazeHeight , std::vector<int>(mazeWidth,'0'));
-    std::vector<std::pair<int,int>> exits;
 
     q.emplace(x, y);
 
@@ -198,7 +204,7 @@ void Labyrinth::generateExits(int x, int y) {
         q.pop();
         visited[row][col] = '1';
 
-        if(exitCount == 2){
+        if(exits.size() == 2){
             break;
         }
 
@@ -206,7 +212,6 @@ void Labyrinth::generateExits(int x, int y) {
             int n_row = row + dx[i];
             int n_col = col + dy[i];
          if(isBorderCell(n_row,n_col)){
-             ++exitCount;
              exits.emplace_back(n_row, n_col);
              continue;
          }

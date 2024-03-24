@@ -5,7 +5,7 @@
 #include <windows.h>
 
 
-constexpr unsigned int  delayMilliseconds = 30;
+constexpr unsigned int  delayMilliseconds = 2;
 
 void printWithDelay(const std::string& text) {
     for (char c : text) {
