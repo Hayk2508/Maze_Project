@@ -10,10 +10,10 @@ public:
     void play() override;
     Labyrinth();
 protected:
-    void launchWelcomeToTheJungle();
+    static void launchWelcomeToTheJungle();
     //void cut(int x,int y);
-    bool isBorderCell(int x, int y);
-    [[noreturn]] void launchTreeocalypse();
+    static bool isBorderCell(int x, int y);
+    [[noreturn]]  void launchTreeocalypse();
     void draw() override;
     void generateExits(int x, int y);
 

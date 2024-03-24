@@ -2,10 +2,10 @@
 #include <windows.h>
 #include "../Includes/labyrinth.h"
 
-int humanPlayer::getX() {
+int humanPlayer::getX() const{
     return pX;
 }
-int humanPlayer::getY() {
+int humanPlayer::getY() const{
     return pY;
 }
 
@@ -51,7 +51,7 @@ bool humanPlayer::move(std::vector<std::vector<char>>& tMaze) {
     return false;
 }
 
-std::string humanPlayer::getNickname() {
+std::string humanPlayer::getNickname() const{
     return nickname;
 }
 void humanPlayer::setX(int x) {

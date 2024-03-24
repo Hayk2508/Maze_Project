@@ -34,6 +34,9 @@ void Labyrinth::play() {
             system("cls");
             launchTreeocalypse();
         }
+         else{
+             std::cout << "Please type only the numbers that mentioned above\n";
+         }
      }
 }
 
@@ -44,14 +47,12 @@ void Labyrinth::play() {
 //        maze[x][y +1] = '.';
 //}
 
+
+
+
 [[noreturn]] void Labyrinth::launchTreeocalypse() {
 
-    auto cut = [&](int x, int y){
-        maze[x-1][y] = '.';
-        maze[x+1][y] = '.';
-        maze[x][y -1] = '.';
-        maze[x][y +1] = '.';
-    };
+
 
     auto generateNumber = [](int minValue, int maxValue) {
         std::random_device rd;
@@ -71,11 +72,20 @@ void Labyrinth::play() {
     int startX = generateNumber(9,11);
     int startY = generateNumber(9,11);
 
+
+
+    auto cut = [&](int x, int y){
+        tMaze.maze[x-1][y] = '.';
+        tMaze.maze[x+1][y] = '.';
+        tMaze.maze[x][y -1] = '.';
+        tMaze.maze[x][y +1] = '.';
+    };
+
     tMaze.maze[startX][startY] = '@';
     tMaze.generateGrid(startX,startY);
     cut(startX,startY);
     tMaze.generateExits(startX, startY);
-    tMaze.findWinnablePath(startX, startY);
+    //tMaze.findWinnablePath(startX, startY);
     tMaze.draw();
 
     player.setX(startX);
@@ -103,7 +113,7 @@ bool Labyrinth::isValidCell(int x,int y){
 }
 
 void Labyrinth::launchWelcomeToTheJungle() {
-    WelcomeToTheJungle maze;
+    WelcomeToTheJungle wMaze;
 }
     Labyrinth::Labyrinth() {
     maze.resize(mazeHeight,std::vector<char>(mazeWidth,'#'));
@@ -116,6 +126,7 @@ void Labyrinth::generateGrid(int x,int y) {
     if(maze[x][y]!='@'){
         maze[x][y] = '.';
     }
+
 
     std::vector<int> directions = {0, 1, 2, 3};
     std::shuffle(directions.begin(), directions.end(), gen);

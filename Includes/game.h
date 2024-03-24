@@ -6,9 +6,9 @@ public:
     virtual void play();
     virtual void draw();
     static void clearConsole();
-    void start () const;
-    void showInfo() const;
-    void Credits() const;
+    static void start () ;
+    static void showInfo() ;
+    static void Credits() ;
     void play_music() const;
 };
 

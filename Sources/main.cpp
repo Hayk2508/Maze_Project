@@ -1,6 +1,6 @@
 #include "../Includes/game.h"
 
 int main() {
-    Game game;
-    game.start();
+    [[maybe_unused]] Game game;
+    Game::start();
 }

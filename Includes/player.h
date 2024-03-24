@@ -4,5 +4,5 @@
 
 class Player{
 public:
-     virtual bool move(std::vector<std::vector<char>>& mmaze) = 0;
+     virtual bool move(std::vector<std::vector<char>>& maze) = 0;
 };

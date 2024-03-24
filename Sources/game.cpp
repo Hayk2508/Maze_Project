@@ -17,7 +17,7 @@ void printWithDelay(const std::string& text) {
 void Game::play_music() const{
     //PlaySound("undertale_100. MEGALOVANIA.wav", nullptr, SND_FILENAME | SND_ASYNC);
 }
-void Game::showInfo() const{
+void Game::showInfo() {
     printWithDelay("For this moment, the game Labyrinth contains only two modes:\n\n"
                    "1. Welcome to the jungle - the labyrinth is filled with a lot of trees "
                    "and it is impossible to regularly solve the labyrinth. "
@@ -30,12 +30,12 @@ void Game::showInfo() const{
                    "If it is impossible to add a new 'planted' cell, the 'planting' will be skipped.\n");
 }
 
-void Game::Credits() const{
+void Game::Credits() {
     printWithDelay( "These games were created by Hayk Hovhannisyan and Samvel Arabyan\n"
                     "We hope you enjoy playing them, stay tuned for more!\n");
 }
 void Game::play() {}
-void Game::start() const{
+void Game::start() {
     //play_music();
     printWithDelay( "\nWelcome, adventurer, to the Labyrinth of Mystery!\n"
                     "Within these twisting corridors lie untold secrets and treasures waiting to be discovered. Are you ready to embark on a journey filled with excitement and peril?\n"
@@ -52,7 +52,7 @@ void Game::start() const{
                     "If you desire to learn more about the creators of this game, type: CREDITS.\n"
                     "If you wish to exit the game, type: EXIT.\n");
     std::string input;
-    while(1){
+    while(true){
         std::cin >> input;
         if(input == "INFO") {
             showInfo();
