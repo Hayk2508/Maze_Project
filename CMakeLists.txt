@@ -16,6 +16,7 @@ add_executable(Maze_Project Sources/main.cpp
         Includes/welcometothejungle.h
         Includes/tree.h
         Sources/tree.cpp
-        Sources/tree.cpp)
+        Sources/tree.cpp
+)
 
 target_link_libraries(Maze_Project winmm)
