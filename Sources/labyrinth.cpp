@@ -85,14 +85,16 @@ void Labyrinth::play() {
     tMaze.generateGrid(startX,startY);
     cut(startX,startY);
     tMaze.generateExits(startX, startY);
-    //tMaze.findWinnablePath(startX, startY);
     tMaze.draw();
 
     player.setX(startX);
     player.setY(startY);
+
+    tMaze.setDistancesFromPlayer(player);
     //play_music();
     while(true){
         if(player.move(tMaze.maze)){
+           // tMaze.findEmptyCells();
             if(isBorderCell(player.getX(), player.getY())){
                 system("cls");
                 Sleep(500);
@@ -104,8 +106,8 @@ void Labyrinth::play() {
             Sleep(100);
             tMaze.draw();
 
-            tMaze.setDistancesFromPlayer(player);
             tMaze.planting();
+
 
             clearConsole();
             Sleep(100);

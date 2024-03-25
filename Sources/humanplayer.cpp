@@ -19,30 +19,34 @@ bool humanPlayer::move(std::vector<std::vector<char>>& tMaze) {
         if (Labyrinth::isValidCell(pX - 1, pY) && tMaze[pX - 1][pY] == '.') {
             tMaze[pX][pY] = '.';
             --pX;
+            tmp = true;
         }
-        tmp = true;
+
     }
     else if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
         if (Labyrinth::isValidCell(pX + 1, pY) && tMaze[pX + 1][pY] == '.') {
             tMaze[pX][pY] = '.';
             ++pX;
+            tmp = true;
         }
-        tmp = true;
+
 
     }
     else if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
         if (Labyrinth::isValidCell(pX, pY - 1) && tMaze[pX][pY - 1] == '.') {
             tMaze[pX][pY] = '.';
             --pY;
+            tmp = true;
         }
-        tmp = true;
+
     }
     else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
         if (Labyrinth::isValidCell(pX, pY + 1) && tMaze[pX][pY + 1] == '.') {
             tMaze[pX][pY] = '.';
             ++pY;
+            tmp = true;
         }
-        tmp = true;
+
 }
     if(tmp){
         tMaze[pX][pY] = '@';
