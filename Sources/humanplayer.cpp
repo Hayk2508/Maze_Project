@@ -1,6 +1,7 @@
 #include "../Includes/humanplayer.h"
 #include <windows.h>
 #include "../Includes/labyrinth.h"
+#include "../Includes/treeocalypse.h"
 
 int humanPlayer::getX() const{
     return pX;
@@ -18,16 +19,22 @@ bool humanPlayer::move(std::vector<std::vector<char>>& tMaze) {
     if (GetAsyncKeyState(VK_UP) & 0x8000) {
         if (Labyrinth::isValidCell(pX - 1, pY) && tMaze[pX - 1][pY] == '.') {
             tMaze[pX][pY] = '.';
+            Treeocalypse::setEmptyCell(pX,pY);
             --pX;
+            Treeocalypse::removeEmptyCell(pX,pY);
             tmp = true;
+
         }
 
     }
     else if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
         if (Labyrinth::isValidCell(pX + 1, pY) && tMaze[pX + 1][pY] == '.') {
             tMaze[pX][pY] = '.';
+            Treeocalypse::setEmptyCell(pX,pY);
             ++pX;
+            Treeocalypse::removeEmptyCell(pX,pY);
             tmp = true;
+
         }
 
 
@@ -35,15 +42,20 @@ bool humanPlayer::move(std::vector<std::vector<char>>& tMaze) {
     else if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
         if (Labyrinth::isValidCell(pX, pY - 1) && tMaze[pX][pY - 1] == '.') {
             tMaze[pX][pY] = '.';
+            Treeocalypse::setEmptyCell(pX,pY);
             --pY;
+            Treeocalypse::removeEmptyCell(pX,pY);
             tmp = true;
+
         }
 
     }
     else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
         if (Labyrinth::isValidCell(pX, pY + 1) && tMaze[pX][pY + 1] == '.') {
             tMaze[pX][pY] = '.';
+            Treeocalypse::setEmptyCell(pX,pY);
             ++pY;
+            Treeocalypse::removeEmptyCell(pX,pY);
             tmp = true;
         }
 

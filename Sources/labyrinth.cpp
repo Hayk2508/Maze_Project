@@ -89,12 +89,14 @@ void Labyrinth::play() {
 
     player.setX(startX);
     player.setY(startY);
-
-    tMaze.setDistancesFromPlayer(player);
+    std::vector<std::vector<int>> distances(mazeHeight,std::vector<int>(mazeWidth,0));
+    tMaze.setDistancesFromPlayer(player,distances);
+    std::vector<std::vector<int>> distancesAfterEachMove = distances;
+    tMaze.findEmptyCells();
     //play_music();
     while(true){
         if(player.move(tMaze.maze)){
-           // tMaze.findEmptyCells();
+            tMaze.setDistancesFromPlayer(player,distancesAfterEachMove);
             if(isBorderCell(player.getX(), player.getY())){
                 system("cls");
                 Sleep(500);
@@ -106,7 +108,7 @@ void Labyrinth::play() {
             Sleep(100);
             tMaze.draw();
 
-            tMaze.planting();
+            tMaze.planting(distancesAfterEachMove);
 
 
             clearConsole();
