@@ -9,7 +9,7 @@ public:
     static void start ();
     static void showInfo();
     static void Credits();
-    void play_music() const;
+    static void play_music();
 };
 
 
