@@ -26,8 +26,8 @@ protected:
     void generateExits(int x, int y);
 
     std::vector<std::pair<int, int>> exits;
-    static constexpr int mazeWidth = 25;
-    static constexpr int mazeHeight = 25;
+    static constexpr int mazeWidth = 27;
+    static constexpr int mazeHeight = 27;
     std::vector<std::vector<char>> maze;
     std::vector<std::pair<int, int>> winnablePath;
 };

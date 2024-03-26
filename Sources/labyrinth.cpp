@@ -1,7 +1,6 @@
 #include "../Includes/labyrinth.h"
 #include "../Includes/treeocalypse.h"
 #include "../Includes/welcometothejungle.h"
-#include "../Includes/humanplayer.h"
 #include <iostream>
 #include <memory>
 #include <random>
@@ -62,8 +61,8 @@ void Labyrinth::play() {
     player.setNickname(input);
     system("cls");
 
-    int startX = generateNumber(12, 14);
-    int startY = generateNumber(12, 14);
+    int startX = generateNumber(13, 15);
+    int startY = generateNumber(13, 15);
 
 
     tMaze.maze[startX][startY] = '@';
@@ -75,7 +74,6 @@ void Labyrinth::play() {
     player.setX(startX);
     player.setY(startY);
     std::vector<std::vector<int>> distancesAfterEachMove(mazeHeight, std::vector<int>(mazeWidth, 0));
-    tMaze.setDistancesFromPlayer(player, distancesAfterEachMove);
     tMaze.findEmptyCells();
 
     while (true) {
@@ -120,7 +118,6 @@ void Labyrinth::generateGrid(int x, int y) {
     if (maze[x][y] != '@') {
         maze[x][y] = '.';
     }
-
 
     std::vector<int> directions = {0, 1, 2, 3};
     std::shuffle(directions.begin(), directions.end(), gen);
