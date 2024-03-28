@@ -117,17 +117,12 @@ void Treeocalypse::planting(std::vector<std::vector<int>> &distances) {
 }
 
 bool Treeocalypse::isWinnable(std::vector<std::vector<int>> &distances) {
-    if (this->exits.size() == 2) {
-        if (distances[this->exits[0].first][this->exits[0].second] == 0 &&
-            distances[this->exits[1].first][this->exits[1].second] == 0) {
-            return false;
-        }
-    } else {
-        if (distances[this->exits[0].first][this->exits[0].second] == 0) {
-            return false;
+    for (auto el: exits) {
+        if (distances[el.first][el.second] != 0) {
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 

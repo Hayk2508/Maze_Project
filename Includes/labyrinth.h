@@ -3,6 +3,7 @@
 #include "game.h"
 #include <vector>
 #include <iostream>
+#include <set>
 
 class Labyrinth : public Game {
 public:
@@ -25,7 +26,7 @@ protected:
 
     void generateExits(int x, int y);
 
-    std::vector<std::pair<int, int>> exits;
+    std::set<std::pair<int, int>> exits;
     static constexpr int mazeWidth = 27;
     static constexpr int mazeHeight = 27;
     std::vector<std::vector<char>> maze;
