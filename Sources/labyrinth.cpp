@@ -73,10 +73,16 @@ void Labyrinth::play() {
 
     player.setX(startX);
     player.setY(startY);
-    std::vector<std::vector<int>> distancesAfterEachMove(mazeHeight, std::vector<int>(mazeWidth, 0));
+
     tMaze.findEmptyCells();
 
-    while (true) {
+    std::vector<std::vector<int>> distances(mazeHeight, std::vector<int>(mazeWidth));
+    tMaze.setDistancesFromPlayer(player, distances);
+
+
+    std::vector<std::vector<int>> distancesAfterEachMove = distances;
+
+    while (tMaze.isWinnable(distancesAfterEachMove)) {
         tMaze.setDistancesFromPlayer(player, distancesAfterEachMove);
         if (player.move(tMaze.maze)) {
             if (isBorderCell(player.getX(), player.getY())) {
@@ -89,7 +95,7 @@ void Labyrinth::play() {
             clearConsole();
             tMaze.draw();
 
-            tMaze.planting(distancesAfterEachMove);
+            tMaze.planting(distances);
 
 
             clearConsole();
@@ -97,6 +103,11 @@ void Labyrinth::play() {
         }
 
     }
+    system("cls");
+    Sleep(100);
+    std::cout << "You lost the game!\n";
+    Sleep(3000);
+    exit(0);
 }
 
 bool Labyrinth::isValidCell(int x, int y) {
@@ -176,6 +187,11 @@ void Labyrinth::generateExits(int x, int y) {
     for (int i = 0; i < mazeWidth; ++i)
         maze[i][mazeHeight - 1] = '#';
 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> distribution(1, 2);
+
+    int countOfExits = distribution(gen);
     std::queue<std::pair<int, int>> q;
     std::vector<std::vector<int>> visited
             (mazeHeight, std::vector<int>(mazeWidth, '0'));
@@ -187,7 +203,7 @@ void Labyrinth::generateExits(int x, int y) {
         q.pop();
         visited[row][col] = '1';
 
-        if (exits.size() == 2) {
+        if (exits.size() == countOfExits) {
             break;
         }
 
@@ -195,7 +211,7 @@ void Labyrinth::generateExits(int x, int y) {
             int n_row = row + dx[i];
             int n_col = col + dy[i];
             if (isBorderCell(n_row, n_col)) {
-                exits.emplace_back(n_row, n_col);
+                exits.insert({n_row, n_col});
                 continue;
             }
 
