@@ -16,7 +16,7 @@ void printWithDelay(const std::string &text) {
 }
 
 void Game::play_music() {
-    PlaySound("Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav", nullptr, SND_FILENAME | SND_ASYNC);
+    PlaySound("C:/Users/User/Desktop/Projects/Maze_Project/Musics/Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav", nullptr, SND_FILENAME | SND_ASYNC);
 }
 
 void Game::showInfo() {

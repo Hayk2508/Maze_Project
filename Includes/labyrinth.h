@@ -19,7 +19,7 @@ protected:
 
     static bool isBorderCell(int x, int y);
 
-    [[noreturn]]  void launchTreeocalypse();
+    [[noreturn]]  static void launchTreeocalypse();
 
     void draw() override;
 
