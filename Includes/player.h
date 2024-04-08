@@ -1,6 +1,7 @@
 #pragma once
 #include "game.h"
 #include "labyrinth.h"
+#include <vector>
 
 class Player{
 public:

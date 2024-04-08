@@ -79,7 +79,6 @@ void Game::clearConsole() {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
 }
 
-void Game::draw() {}
 
 
 

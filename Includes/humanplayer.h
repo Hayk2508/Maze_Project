@@ -5,16 +5,17 @@
 
 class humanPlayer: public Player{
 public:
-    bool  move(std::vector<std::vector<char>>& maze) override;
+    bool move(std::vector<std::vector<char>> &tMaze) override;
     void setNickname(std::string& nickname);
     void setX(int x);
     void setY(int y);
     [[nodiscard]] int getX() const;
     [[nodiscard]] int getY() const;
-    [[nodiscard]] std::string getNickname() const;
 
+    [[nodiscard]] std::string getNickname() const;
 private:
     std::string nickname;
     int pX;
+
     int pY;
 };

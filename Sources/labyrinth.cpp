@@ -15,6 +15,7 @@ constexpr int dy[] = {-1, 0, 1, 0};
 
 
 void Labyrinth::play() {
+
     std::string input;
     std::cout << "Fine! Now choose one of the modes of the Game Labyrinth by writing its number\n";
     std::cout << "1.Welcome to the jungle\n" << "2.Treeocalypse\n";
@@ -95,7 +96,7 @@ void Labyrinth::play() {
             clearConsole();
             tMaze.draw();
 
-            tMaze.planting(distances);
+            tMaze.planting(distancesAfterEachMove);
 
 
             clearConsole();
@@ -104,7 +105,7 @@ void Labyrinth::play() {
 
     }
     system("cls");
-    Sleep(100);
+    Sleep(1000);
     std::cout << "You lost the game!\n";
     Sleep(3000);
     exit(0);
@@ -116,6 +117,46 @@ bool Labyrinth::isValidCell(int x, int y) {
 
 void Labyrinth::launchWelcomeToTheJungle() {
     WelcomeToTheJungle wMaze;
+
+    auto generateNumber = [](int minValue, int maxValue) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(minValue, maxValue);
+        return dis(gen);
+    };
+    auto cut = [&](int x, int y) {
+        wMaze.maze[x - 1][y] = '.';
+        wMaze.maze[x + 1][y] = '.';
+        wMaze.maze[x][y - 1] = '.';
+        wMaze.maze[x][y + 1] = '.';
+    };
+
+
+    humanPlayer player;
+    std::string input;
+    std::cout << "Choose your nickname!\n";
+    std::cin >> input;
+    player.setNickname(input);
+    system("cls");
+
+    int startX = generateNumber(13, 15);
+    int startY = generateNumber(13, 15);
+
+
+    wMaze.maze[startX][startY] = '@';
+    wMaze.generateGrid(startX, startY);
+    cut(startX, startY);
+    wMaze.generateExits(startX, startY);
+    player.setX(startX);
+    player.setY(startY);
+    wMaze.make_unsolvable(player);
+
+
+
+   wMaze.draw(wMaze.getAxes());
+   while(1){
+
+   }
 }
 
 Labyrinth::Labyrinth() {
@@ -144,7 +185,7 @@ void Labyrinth::generateGrid(int x, int y) {
     }
 }
 
-void Labyrinth::draw() {
+void Labyrinth::draw(int axes ) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
     cursorInfo.dwSize = 100;
@@ -155,18 +196,24 @@ void Labyrinth::draw() {
     position.X = 0;
     position.Y = 0;
     SetConsoleCursorPosition(hConsole, position);
+
+    int count = 0;
     for (const auto &row: maze) {
         for (char cell: row) {
             if (cell == '#') {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
-                std::cout << std::setw(3) << '#';
+                std::cout << std::setw(2) << '#';
             } else if (cell == '@') {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-                std::cout << std::setw(3) << '@';
+                std::cout << std::setw(2) << '@';
             } else {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
-                std::cout << std::setw(3) << '.';
+                std::cout << std::setw(2) << '.';
             }
+        }
+        count++;
+        if(count == 4 && axes != 0){
+            std::cout<<"                   "<<axes;
         }
         std::cout << std::endl;
     }

@@ -1,7 +1,6 @@
 #pragma once
 #include "labyrinth.h"
 #include "tree.h"
-#include "humanplayer.h"
 
 class Treeocalypse:public Labyrinth {
 public:
