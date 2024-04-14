@@ -8,7 +8,7 @@ public:
     static void start ();
     static void showInfo();
     static void Credits();
-    static void play_music();
+    static void play_music(const char *path);
 };
 
 

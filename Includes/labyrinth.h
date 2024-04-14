@@ -23,9 +23,10 @@ protected:
 
     [[noreturn]]  static void launchTreeocalypse();
 
-    void draw(int axes = 0 ) ;
+    void draw(int axes = 0 );
 
     void generateExits(int x, int y);
+
     std::set<std::pair<int, int>> exits;
     static constexpr int mazeWidth = 27;
     static constexpr int mazeHeight = 27;

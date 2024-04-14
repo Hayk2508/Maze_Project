@@ -59,6 +59,7 @@ void Labyrinth::play() {
     std::string input;
     std::cout << "Choose your nickname!\n";
     std::cin >> input;
+    play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav");
     player.setNickname(input);
     system("cls");
 
@@ -90,7 +91,8 @@ void Labyrinth::play() {
                 system("cls");
                 Sleep(500);
                 std::cout << "Congratulations " << player.getNickname() << ", you won the game!\n";
-                Sleep(3000);
+                play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/1984a9f3474ab6d.wav");
+                Sleep(4000);
                 exit(0);
             }
             clearConsole();
@@ -106,8 +108,9 @@ void Labyrinth::play() {
     }
     system("cls");
     Sleep(1000);
-    std::cout << "You lost the game!\n";
-    Sleep(3000);
+    play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/fail-wha-wha-version.wav");
+    std::cout << "Game Over :( \n";
+    Sleep(6000);
     exit(0);
 }
 
@@ -136,6 +139,7 @@ void Labyrinth::launchWelcomeToTheJungle() {
     std::string input;
     std::cout << "Choose your nickname!\n";
     std::cin >> input;
+    play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav");
     player.setNickname(input);
     system("cls");
 
@@ -154,9 +158,7 @@ void Labyrinth::launchWelcomeToTheJungle() {
 
 
    wMaze.draw(wMaze.getAxes());
-   while(1){
 
-   }
 }
 
 Labyrinth::Labyrinth() {
