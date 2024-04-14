@@ -5,7 +5,7 @@
 
 class humanPlayer: public Player{
 public:
-    bool move(std::vector<std::vector<char>> &tMaze) override;
+    bool move(std::vector<std::vector<char>> & Maze, int& axes ) override;
     void setNickname(std::string& nickname);
     void setX(int x);
     void setY(int y);

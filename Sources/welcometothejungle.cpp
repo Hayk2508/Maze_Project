@@ -1,17 +1,26 @@
 #include "../Includes/welcometothejungle.h"
 #include <queue>
 #include <random>
-#include <iostream>
-#include <memory>
-#include <random>
-#include <thread>
-#include <windows.h>
 #include <algorithm>
-#include <queue>
-#include <iomanip>
 
 constexpr int dx[] = {0, 1, 0, -1};
 constexpr int dy[] = {-1, 0, 1, 0};
+
+
+
+bool WelcomeToTheJungle::isWinnable(std::vector<std::vector<int>> &distances) {
+    if(getAxes() > 0)
+        return true;
+
+    for (auto el: exits) {
+        if (distances[el.first][el.second] != 0) {
+            return true;
+        }
+    }
+
+    return false;
+
+}
 
 void WelcomeToTheJungle::make_unsolvable(humanPlayer& p) {
     for(auto exit: exits) {
@@ -23,7 +32,7 @@ void WelcomeToTheJungle::make_unsolvable(humanPlayer& p) {
 
         int numberOfTrees = distribution(gen);
 
-        std::uniform_int_distribution<int> distribution1(0, winnablePath.size() - 1);
+        std::uniform_int_distribution<int> distribution1(1 , (int)winnablePath.size() - 1 );
         while (numberOfTrees-- > 0) {
             int tree = distribution1(gen);
             this->maze[winnablePath[tree].first][winnablePath[tree].second] = '#';
@@ -31,7 +40,7 @@ void WelcomeToTheJungle::make_unsolvable(humanPlayer& p) {
     }
 }
 
-int WelcomeToTheJungle::getAxes(){
+int& WelcomeToTheJungle::getAxes(){
     return this->axes;
 }
 
@@ -54,7 +63,7 @@ void WelcomeToTheJungle::findWinnablePath(std::pair<int, int> exit, humanPlayer 
             int nx = row + dx[i];
             int ny = col + dy[i];
 
-            if (isValidCell(nx, ny) && this->maze[nx][ny] == '.' && visited[nx][ny]!='1') {
+            if (isValidCell(nx, ny) && this->maze[nx][ny] == '.' && visited[nx][ny]!= '1') {
                 q.emplace(nx, ny);
                 distances[nx][ny] = distances[row][col] + 1;
                 visited[nx][ny] = '1';
@@ -64,8 +73,8 @@ void WelcomeToTheJungle::findWinnablePath(std::pair<int, int> exit, humanPlayer 
     winnablePath.emplace_back(exit.first,exit.second);
 
     std::pair<int,int> curr = {exit.first,exit.second};
-
-    while(curr.first!=p.getX() && curr.second!=p.getY()){
+    std::pair<int, int> start = {p.getX(), p.getY()};
+    while(curr != start ){
         for (int i = 0; i < 4; ++i) {
             int nx = curr.first + dx[i];
             int ny = curr.second + dy[i];
@@ -79,4 +88,32 @@ void WelcomeToTheJungle::findWinnablePath(std::pair<int, int> exit, humanPlayer 
     }
 
 
+}
+
+void WelcomeToTheJungle::setDistancesFromPlayer(humanPlayer &p, std::vector<std::vector<int>> &distances) {
+    for (int i = 0; i < mazeWidth; ++i) {
+        for (int j = 0; j < mazeHeight; ++j) {
+            distances[i][j] = 0;
+        }
+    }
+
+    std::queue<std::pair<int, int>> q;
+    std::vector<std::vector<char>> visited(mazeWidth, std::vector<char>(mazeHeight, '0'));
+    q.emplace(p.getX(), p.getY());
+
+    while (!q.empty()) {
+        auto [row, col] = q.front();
+        q.pop();
+        visited[row][col] = '1';
+
+        for (int i = 0; i < 4; ++i) {
+            int nx = row + dx[i];
+            int ny = col + dy[i];
+
+            if (isValidCell(nx, ny) && this->maze[nx][ny] == '.' && visited[nx][ny] == '0') {
+                q.emplace(nx, ny);
+                distances[nx][ny] = distances[row][col] + 1;
+            }
+        }
+    }
 }

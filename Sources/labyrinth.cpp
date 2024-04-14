@@ -41,6 +41,7 @@ void Labyrinth::play() {
 
 [[noreturn]] void Labyrinth::launchTreeocalypse() {
     Treeocalypse tMaze;
+    int axes = 0;
 
     auto generateNumber = [](int minValue, int maxValue) {
         std::random_device rd;
@@ -63,15 +64,15 @@ void Labyrinth::play() {
     player.setNickname(input);
     system("cls");
 
-    int startX = generateNumber(13, 15);
-    int startY = generateNumber(13, 15);
+    int startX = generateNumber(12, 14);
+    int startY = generateNumber(12, 14);
 
 
     tMaze.maze[startX][startY] = '@';
     tMaze.generateGrid(startX, startY);
     cut(startX, startY);
     tMaze.generateExits(startX, startY);
-    tMaze.draw();
+    tMaze.draw(axes);
 
     player.setX(startX);
     player.setY(startY);
@@ -81,12 +82,11 @@ void Labyrinth::play() {
     std::vector<std::vector<int>> distances(mazeHeight, std::vector<int>(mazeWidth));
     tMaze.setDistancesFromPlayer(player, distances);
 
-
     std::vector<std::vector<int>> distancesAfterEachMove = distances;
 
     while (tMaze.isWinnable(distancesAfterEachMove)) {
         tMaze.setDistancesFromPlayer(player, distancesAfterEachMove);
-        if (player.move(tMaze.maze)) {
+        if (player.move(tMaze.maze, axes)) {
             if (isBorderCell(player.getX(), player.getY())) {
                 system("cls");
                 Sleep(500);
@@ -95,26 +95,24 @@ void Labyrinth::play() {
                 Sleep(4000);
                 exit(0);
             }
-            clearConsole();
-            tMaze.draw();
 
             tMaze.planting(distancesAfterEachMove);
-
-
+            Sleep(125);
             clearConsole();
-            tMaze.draw();
+            tMaze.draw(axes);
         }
-
     }
     system("cls");
     Sleep(1000);
+    std::cout<<"ALL THE ROADS TO EXIT ARE IMPASSABLE NOW \n";
+    Sleep(2500);
     play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/fail-wha-wha-version.wav");
     std::cout << "Game Over :( \n";
     Sleep(6000);
     exit(0);
 }
 
-bool Labyrinth::isValidCell(int x, int y) {
+bool Labyrinth::isValidCell(int x, int y ) {
     return y >= 0 && y < mazeWidth && x >= 0 && x < mazeHeight;
 }
 
@@ -153,11 +151,39 @@ void Labyrinth::launchWelcomeToTheJungle() {
     wMaze.generateExits(startX, startY);
     player.setX(startX);
     player.setY(startY);
+
     wMaze.make_unsolvable(player);
+    wMaze.draw(wMaze.getAxes());
 
+    std::vector<std::vector<int>> distances(mazeHeight, std::vector<int>(mazeWidth));
+    wMaze.setDistancesFromPlayer(player, distances);
 
+    while(wMaze.isWinnable(distances)){
+        if(player.move(wMaze.maze, wMaze.getAxes()) ){
+            wMaze.setDistancesFromPlayer(player, distances);
 
-   wMaze.draw(wMaze.getAxes());
+            if (isBorderCell(player.getX(), player.getY())) {
+                system("cls");
+                Sleep(500);
+                std::cout << "Congratulations " << player.getNickname() << ", you won the game!\n";
+                play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/1984a9f3474ab6d.wav");
+                Sleep(4000);
+                exit(0);
+            }
+            Sleep(125);
+            clearConsole();
+            wMaze.draw(wMaze.getAxes());
+        }
+    }
+
+    system("cls");
+    Sleep(1000);
+    std::cout<<"YOU HAVE NO MORE AXES LEFT TO CLEAN THE ROAD TO EXIT!"<<std::endl;
+    Sleep(2000);
+    play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/fail-wha-wha-version.wav");
+    std::cout << "Game Over :( \n";
+    Sleep(6000);
+    exit(0);
 
 }
 
@@ -187,7 +213,7 @@ void Labyrinth::generateGrid(int x, int y) {
     }
 }
 
-void Labyrinth::draw(int axes ) {
+void Labyrinth::draw(int& axes ) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
     cursorInfo.dwSize = 100;
@@ -215,7 +241,7 @@ void Labyrinth::draw(int axes ) {
         }
         count++;
         if(count == 4 && axes != 0){
-            std::cout<<"                   "<<axes;
+            std::cout<<"                     AMOUNT OF AXES : "<<axes;
         }
         std::cout << std::endl;
     }

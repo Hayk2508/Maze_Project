@@ -18,8 +18,8 @@ add_executable(Maze_Project Sources/main.cpp
         Sources/tree.cpp
 )
 target_link_libraries(Maze_Project winmm)
-configure_file(
-        "C:/Users/User/Desktop/Projects/Maze_Project/Musics/Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav"
-        "${CMAKE_CURRENT_BINARY_DIR}/music_file.wav"
-        COPYONLY
-)
+#configure_file(
+#        "C:/Users/User/Desktop/Projects/Maze_Project/Musics/Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav"
+#        "${CMAKE_CURRENT_BINARY_DIR}/music_file.wav"
+#        COPYONLY
+#)

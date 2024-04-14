@@ -45,9 +45,11 @@ void Treeocalypse::setDistancesFromPlayer(humanPlayer &p, std::vector<std::vecto
             distances[i][j] = 0;
         }
     }
+
     std::queue<std::pair<int, int>> q;
     std::vector<std::vector<char>> visited(mazeWidth, std::vector<char>(mazeHeight, '0'));
     q.emplace(p.getX(), p.getY());
+
     while (!q.empty()) {
         auto [row, col] = q.front();
         q.pop();

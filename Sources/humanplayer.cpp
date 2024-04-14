@@ -3,76 +3,108 @@
 #include "../Includes/labyrinth.h"
 #include "../Includes/treeocalypse.h"
 
-int humanPlayer::getX() const{
+int humanPlayer::getX() const {
     return pX;
 }
-int humanPlayer::getY() const{
+
+int humanPlayer::getY() const {
     return pY;
 }
 
-void humanPlayer::setNickname(std::string& nickname) {
-    this->nickname = nickname;
-}
+bool humanPlayer::move(std::vector<std::vector<char>> &Maze, int &axes) {
+    bool madeMove = false;
 
-bool humanPlayer::move(std::vector<std::vector<char>>& tMaze) {
-    bool tmp = false;
     if (GetAsyncKeyState(VK_UP) & 0x8000) {
-        if (Labyrinth::isValidCell(pX - 1, pY) && tMaze[pX - 1][pY] == '.') {
-            tMaze[pX][pY] = '.';
-            Treeocalypse::setEmptyCell(pX,pY);
-            --pX;
-            Treeocalypse::removeEmptyCell(pX,pY);
-            tmp = true;
+        if (Labyrinth::isValidCell(pX - 1, pY )) {
+            if (Maze[pX - 1][pY ] == '.') {
+                Maze[pX][pY] = '.';
+                madeMove = true;
+                --pX;
 
+                Treeocalypse::setEmptyCell(pX, pY);
+                Treeocalypse::removeEmptyCell(pX, pY);
+
+            } else if (Maze[pX - 1][pY ] == '#' && axes > 0) {
+                Maze[pX][pY] = '.';
+                madeMove = true;
+                --pX;
+                axes--;
+            }
         }
 
+    } else if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
+        if (Labyrinth::isValidCell(pX + 1, pY )) {
+            if (Maze[pX + 1][pY ] == '.') {
+                Maze[pX][pY] = '.';
+                madeMove = true;
+                ++pX;
+
+                Treeocalypse::setEmptyCell(pX, pY);
+                Treeocalypse::removeEmptyCell(pX, pY);
+
+            } else if (Maze[pX + 1][pY ] == '#' && axes > 0) {
+                Maze[pX][pY] = '.';
+                madeMove = true;
+                ++pX;
+                axes--;
+            }
+        }
+
+    } else if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
+        if (Labyrinth::isValidCell(pX, pY - 1)) {
+            if (Maze[pX][pY - 1] == '.') {
+                Maze[pX][pY] = '.';
+                madeMove = true;
+                --pY;
+
+                Treeocalypse::setEmptyCell(pX, pY);
+                Treeocalypse::removeEmptyCell(pX, pY);
+
+            } else if (Maze[pX][pY - 1] == '#' && axes > 0) {
+                Maze[pX][pY] = '.';
+                madeMove = true;
+                --pY;
+                axes--;
+            }
+        }
+    } else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+        if (Labyrinth::isValidCell(pX, pY + 1)) {
+            if (Maze[pX][pY + 1] == '.') {
+                Maze[pX][pY] = '.';
+                madeMove = true;
+                ++pY;
+
+                Treeocalypse::setEmptyCell(pX, pY);
+                Treeocalypse::removeEmptyCell(pX, pY);
+
+            } else if (Maze[pX][pY + 1] == '#' && axes > 0) {
+                Maze[pX][pY] = '.';
+                madeMove = true;
+                ++pY;
+                axes--;
+            }
+        }
     }
-    else if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-        if (Labyrinth::isValidCell(pX + 1, pY) && tMaze[pX + 1][pY] == '.') {
-            tMaze[pX][pY] = '.';
-            Treeocalypse::setEmptyCell(pX,pY);
-            ++pX;
-            Treeocalypse::removeEmptyCell(pX,pY);
-            tmp = true;
 
-        }
-
-
-    }
-    else if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-        if (Labyrinth::isValidCell(pX, pY - 1) && tMaze[pX][pY - 1] == '.') {
-            tMaze[pX][pY] = '.';
-            Treeocalypse::setEmptyCell(pX,pY);
-            --pY;
-            Treeocalypse::removeEmptyCell(pX,pY);
-            tmp = true;
-
-        }
-
-    }
-    else if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-        if (Labyrinth::isValidCell(pX, pY + 1) && tMaze[pX][pY + 1] == '.') {
-            tMaze[pX][pY] = '.';
-            Treeocalypse::setEmptyCell(pX,pY);
-            ++pY;
-            Treeocalypse::removeEmptyCell(pX,pY);
-            tmp = true;
-        }
-
-}
-    if(tmp){
-        tMaze[pX][pY] = '@';
+    if (madeMove) {
+        Maze[pX][pY] = '@';
         return true;
     }
     return false;
 }
 
-std::string humanPlayer::getNickname() const{
+void humanPlayer::setNickname(std::string &nickname) {
+    this->nickname = nickname;
+}
+
+std::string humanPlayer::getNickname() const {
     return nickname;
 }
+
 void humanPlayer::setX(int x) {
     pX = x;
 }
+
 void humanPlayer::setY(int y) {
     pY = y;
 }

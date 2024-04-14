@@ -6,7 +6,7 @@
 #include <mmsystem.h>
 
 
-constexpr unsigned int delayMilliseconds = 15;
+constexpr unsigned int delayMilliseconds = 0    ;
 
 void printWithDelay(const std::string &text) {
     for (char c: text) {
@@ -16,7 +16,7 @@ void printWithDelay(const std::string &text) {
 }
 
 void Game::play_music(const CHAR *path) {
-    PlaySound((LPCSTR) path, nullptr, SND_FILENAME | SND_ASYNC);
+   PlaySound((LPCSTR) path, nullptr, SND_FILENAME | SND_ASYNC);
 }
 
 void Game::showInfo() {
