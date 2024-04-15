@@ -23,7 +23,7 @@ protected:
 
     [[noreturn]]  static void launchTreeocalypse();
 
-    void draw(int& axes );
+    void draw(int& axes , std::string game);
 
     void generateExits(int x, int y);
 

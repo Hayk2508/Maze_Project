@@ -16,6 +16,5 @@ public:
 private:
     std::string nickname;
     int pX;
-
     int pY;
 };

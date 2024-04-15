@@ -39,6 +39,8 @@ void Labyrinth::play() {
 }
 
 
+
+
 [[noreturn]] void Labyrinth::launchTreeocalypse() {
     Treeocalypse tMaze;
     int axes = 0;
@@ -72,7 +74,7 @@ void Labyrinth::play() {
     tMaze.generateGrid(startX, startY);
     cut(startX, startY);
     tMaze.generateExits(startX, startY);
-    tMaze.draw(axes);
+    tMaze.draw(axes, "T");
 
     player.setX(startX);
     player.setY(startY);
@@ -99,7 +101,7 @@ void Labyrinth::play() {
             tMaze.planting(distancesAfterEachMove);
             Sleep(125);
             clearConsole();
-            tMaze.draw(axes);
+            tMaze.draw(axes, "T");
         }
     }
     system("cls");
@@ -125,11 +127,11 @@ void Labyrinth::launchWelcomeToTheJungle() {
         std::uniform_int_distribution<> dis(minValue, maxValue);
         return dis(gen);
     };
-    auto cut = [&](int x, int y) {
-        wMaze.maze[x - 1][y] = '.';
-        wMaze.maze[x + 1][y] = '.';
-        wMaze.maze[x][y - 1] = '.';
-        wMaze.maze[x][y + 1] = '.';
+    auto close = [&](int x, int y) {
+        wMaze.maze[x - 1][y] = '#';
+        wMaze.maze[x + 1][y] = '#';
+        wMaze.maze[x][y - 1] = '#';
+        wMaze.maze[x][y + 1] = '#';
     };
 
 
@@ -141,25 +143,28 @@ void Labyrinth::launchWelcomeToTheJungle() {
     player.setNickname(input);
     system("cls");
 
-    int startX = generateNumber(13, 15);
-    int startY = generateNumber(13, 15);
+    int startX = generateNumber(11, 15);
+    int startY = generateNumber(11, 15);
 
 
     wMaze.maze[startX][startY] = '@';
     wMaze.generateGrid(startX, startY);
-    cut(startX, startY);
+    close(startX, startY);
     wMaze.generateExits(startX, startY);
+
     player.setX(startX);
     player.setY(startY);
 
     wMaze.make_unsolvable(player);
-    wMaze.draw(wMaze.getAxes());
+    wMaze.draw(wMaze.getAxes(), "W");
+
+
 
     std::vector<std::vector<int>> distances(mazeHeight, std::vector<int>(mazeWidth));
     wMaze.setDistancesFromPlayer(player, distances);
 
     while(wMaze.isWinnable(distances)){
-        if(player.move(wMaze.maze, wMaze.getAxes()) ){
+        if(player.move(wMaze.maze, wMaze.getAxes())){
             wMaze.setDistancesFromPlayer(player, distances);
 
             if (isBorderCell(player.getX(), player.getY())) {
@@ -172,8 +177,9 @@ void Labyrinth::launchWelcomeToTheJungle() {
             }
             Sleep(125);
             clearConsole();
-            wMaze.draw(wMaze.getAxes());
+            wMaze.draw(wMaze.getAxes(), "W");
         }
+
     }
 
     system("cls");
@@ -213,7 +219,7 @@ void Labyrinth::generateGrid(int x, int y) {
     }
 }
 
-void Labyrinth::draw(int& axes ) {
+void Labyrinth::draw(int& axes, std::string game ) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
     cursorInfo.dwSize = 100;
@@ -240,7 +246,7 @@ void Labyrinth::draw(int& axes ) {
             }
         }
         count++;
-        if(count == 4 && axes != 0){
+        if(count == 4  && game == "W"){
             std::cout<<"                     AMOUNT OF AXES : "<<axes;
         }
         std::cout << std::endl;

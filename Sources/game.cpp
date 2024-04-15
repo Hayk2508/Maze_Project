@@ -6,7 +6,7 @@
 #include <mmsystem.h>
 
 
-constexpr unsigned int delayMilliseconds = 0    ;
+constexpr unsigned int delayMilliseconds = 0;
 
 void printWithDelay(const std::string &text) {
     for (char c: text) {
