@@ -39,11 +39,10 @@ void Labyrinth::play() {
 }
 
 
-
-
 [[noreturn]] void Labyrinth::launchTreeocalypse() {
     Treeocalypse tMaze;
     int axes = 0;
+
 
     auto generateNumber = [](int minValue, int maxValue) {
         std::random_device rd;
@@ -62,6 +61,7 @@ void Labyrinth::play() {
     std::string input;
     std::cout << "Choose your nickname!\n";
     std::cin >> input;
+  
     play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav");
     player.setNickname(input);
     system("cls");
@@ -74,6 +74,7 @@ void Labyrinth::play() {
     tMaze.generateGrid(startX, startY);
     cut(startX, startY);
     tMaze.generateExits(startX, startY);
+  
     tMaze.draw(axes, "T");
 
     player.setX(startX);
@@ -89,6 +90,7 @@ void Labyrinth::play() {
     while (tMaze.isWinnable(distancesAfterEachMove)) {
         tMaze.setDistancesFromPlayer(player, distancesAfterEachMove);
         if (player.move(tMaze.maze, axes)) {
+
             if (isBorderCell(player.getX(), player.getY())) {
                 system("cls");
                 Sleep(500);
@@ -115,6 +117,7 @@ void Labyrinth::play() {
 }
 
 bool Labyrinth::isValidCell(int x, int y ) {
+
     return y >= 0 && y < mazeWidth && x >= 0 && x < mazeHeight;
 }
 
@@ -240,6 +243,7 @@ void Labyrinth::draw(int& axes, std::string game ) {
             } else if (cell == '@') {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
                 std::cout << std::setw(2) << '@';
+
             } else {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                 std::cout << std::setw(2) << '.';
