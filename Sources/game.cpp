@@ -15,9 +15,9 @@ void printWithDelay(const std::string &text) {
     }
 }
 
-void Game::play_music() {
-    PlaySound("C:/Users/User/Desktop/Projects/Maze_Project/Musics/Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav", nullptr, SND_FILENAME | SND_ASYNC);
-}
+void Game::play_music(const CHAR *path) {
+   PlaySound((LPCSTR) path, nullptr, SND_FILENAME | SND_ASYNC);
+
 
 void Game::showInfo() {
     printWithDelay("For this moment, the game Labyrinth contains only two modes:\n\n"
@@ -40,7 +40,8 @@ void Game::Credits() {
 void Game::play() {}
 
 void Game::start() {
-    play_music();
+    play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/Undertale_-_Megalovania.wav");
+  
     printWithDelay("\nWelcome, adventurer, to the Labyrinth of Mystery!\n"
                    "Within these twisting corridors lie untold secrets and treasures waiting to be discovered. Are you ready to embark on a journey filled with excitement and peril?\n"
                    "\n"
@@ -79,7 +80,6 @@ void Game::clearConsole() {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
 }
 
-void Game::draw() {}
 
 
 

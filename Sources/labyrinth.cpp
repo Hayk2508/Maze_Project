@@ -15,6 +15,7 @@ constexpr int dy[] = {-1, 0, 1, 0};
 
 
 void Labyrinth::play() {
+
     std::string input;
     std::cout << "Fine! Now choose one of the modes of the Game Labyrinth by writing its number\n";
     std::cout << "1.Welcome to the jungle\n" << "2.Treeocalypse\n";
@@ -40,6 +41,8 @@ void Labyrinth::play() {
 
 [[noreturn]] void Labyrinth::launchTreeocalypse() {
     Treeocalypse tMaze;
+    int axes = 0;
+
 
     auto generateNumber = [](int minValue, int maxValue) {
         std::random_device rd;
@@ -58,18 +61,21 @@ void Labyrinth::play() {
     std::string input;
     std::cout << "Choose your nickname!\n";
     std::cin >> input;
+  
+    play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav");
     player.setNickname(input);
     system("cls");
 
-    int startX = generateNumber(13, 15);
-    int startY = generateNumber(13, 15);
+    int startX = generateNumber(12, 14);
+    int startY = generateNumber(12, 14);
 
 
     tMaze.maze[startX][startY] = '@';
     tMaze.generateGrid(startX, startY);
     cut(startX, startY);
     tMaze.generateExits(startX, startY);
-    tMaze.draw();
+  
+    tMaze.draw(axes, "T");
 
     player.setX(startX);
     player.setY(startY);
@@ -79,43 +85,115 @@ void Labyrinth::play() {
     std::vector<std::vector<int>> distances(mazeHeight, std::vector<int>(mazeWidth));
     tMaze.setDistancesFromPlayer(player, distances);
 
-
     std::vector<std::vector<int>> distancesAfterEachMove = distances;
 
     while (tMaze.isWinnable(distancesAfterEachMove)) {
         tMaze.setDistancesFromPlayer(player, distancesAfterEachMove);
-        if (player.move(tMaze.maze)) {
+        if (player.move(tMaze.maze, axes)) {
+
             if (isBorderCell(player.getX(), player.getY())) {
                 system("cls");
                 Sleep(500);
                 std::cout << "Congratulations " << player.getNickname() << ", you won the game!\n";
-                Sleep(3000);
+                play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/1984a9f3474ab6d.wav");
+                Sleep(4000);
                 exit(0);
             }
+
+            tMaze.planting(distancesAfterEachMove);
+            Sleep(125);
             clearConsole();
-            tMaze.draw();
-
-            tMaze.planting(distances);
-
-
-            clearConsole();
-            tMaze.draw();
+            tMaze.draw(axes, "T");
         }
-
     }
     system("cls");
-    Sleep(100);
-    std::cout << "You lost the game!\n";
-    Sleep(3000);
+    Sleep(1000);
+    std::cout<<"ALL THE ROADS TO EXIT ARE IMPASSABLE NOW \n";
+    Sleep(2500);
+    play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/fail-wha-wha-version.wav");
+    std::cout << "Game Over :( \n";
+    Sleep(6000);
     exit(0);
 }
 
-bool Labyrinth::isValidCell(int x, int y) {
+bool Labyrinth::isValidCell(int x, int y ) {
+
     return y >= 0 && y < mazeWidth && x >= 0 && x < mazeHeight;
 }
 
 void Labyrinth::launchWelcomeToTheJungle() {
     WelcomeToTheJungle wMaze;
+
+    auto generateNumber = [](int minValue, int maxValue) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(minValue, maxValue);
+        return dis(gen);
+    };
+    auto close = [&](int x, int y) {
+        wMaze.maze[x - 1][y] = '#';
+        wMaze.maze[x + 1][y] = '#';
+        wMaze.maze[x][y - 1] = '#';
+        wMaze.maze[x][y + 1] = '#';
+    };
+
+
+    humanPlayer player;
+    std::string input;
+    std::cout << "Choose your nickname!\n";
+    std::cin >> input;
+    play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/Crazy Frog - Axel F (Official Video) (256 kbps) (mp3cut.net).wav");
+    player.setNickname(input);
+    system("cls");
+
+    int startX = generateNumber(11, 15);
+    int startY = generateNumber(11, 15);
+
+
+    wMaze.maze[startX][startY] = '@';
+    wMaze.generateGrid(startX, startY);
+    close(startX, startY);
+    wMaze.generateExits(startX, startY);
+
+    player.setX(startX);
+    player.setY(startY);
+
+    wMaze.make_unsolvable(player);
+    wMaze.draw(wMaze.getAxes(), "W");
+
+
+
+    std::vector<std::vector<int>> distances(mazeHeight, std::vector<int>(mazeWidth));
+    wMaze.setDistancesFromPlayer(player, distances);
+
+    while(wMaze.isWinnable(distances)){
+        if(player.move(wMaze.maze, wMaze.getAxes())){
+            wMaze.setDistancesFromPlayer(player, distances);
+
+            if (isBorderCell(player.getX(), player.getY())) {
+                system("cls");
+                Sleep(500);
+                std::cout << "Congratulations " << player.getNickname() << ", you won the game!\n";
+                play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/1984a9f3474ab6d.wav");
+                Sleep(4000);
+                exit(0);
+            }
+            Sleep(125);
+            clearConsole();
+            wMaze.draw(wMaze.getAxes(), "W");
+        }
+
+    }
+
+    system("cls");
+    Sleep(1000);
+    std::cout<<"YOU HAVE NO MORE AXES LEFT TO CLEAN THE ROAD TO EXIT!"<<std::endl;
+    Sleep(2000);
+    play_music("C:/Users/User/Desktop/Projects/Maze_Project/Musics/fail-wha-wha-version.wav");
+    std::cout << "Game Over :( \n";
+    Sleep(6000);
+    exit(0);
+
 }
 
 Labyrinth::Labyrinth() {
@@ -144,7 +222,7 @@ void Labyrinth::generateGrid(int x, int y) {
     }
 }
 
-void Labyrinth::draw() {
+void Labyrinth::draw(int& axes, std::string game ) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
     cursorInfo.dwSize = 100;
@@ -155,18 +233,25 @@ void Labyrinth::draw() {
     position.X = 0;
     position.Y = 0;
     SetConsoleCursorPosition(hConsole, position);
+
+    int count = 0;
     for (const auto &row: maze) {
         for (char cell: row) {
             if (cell == '#') {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
-                std::cout << std::setw(3) << '#';
+                std::cout << std::setw(2) << '#';
             } else if (cell == '@') {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-                std::cout << std::setw(3) << '@';
+                std::cout << std::setw(2) << '@';
+
             } else {
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
-                std::cout << std::setw(3) << '.';
+                std::cout << std::setw(2) << '.';
             }
+        }
+        count++;
+        if(count == 4  && game == "W"){
+            std::cout<<"                     AMOUNT OF AXES : "<<axes;
         }
         std::cout << std::endl;
     }

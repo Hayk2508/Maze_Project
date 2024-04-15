@@ -38,16 +38,17 @@ void Treeocalypse::findEmptyCells() {
     }
 }
 
-
 void Treeocalypse::setDistancesFromPlayer(humanPlayer &p, std::vector<std::vector<int>> &distances) {
     for (int i = 0; i < mazeWidth; ++i) {
         for (int j = 0; j < mazeHeight; ++j) {
             distances[i][j] = 0;
         }
     }
+
     std::queue<std::pair<int, int>> q;
     std::vector<std::vector<char>> visited(mazeWidth, std::vector<char>(mazeHeight, '0'));
     q.emplace(p.getX(), p.getY());
+
     while (!q.empty()) {
         auto [row, col] = q.front();
         q.pop();
@@ -68,7 +69,6 @@ void Treeocalypse::setDistancesFromPlayer(humanPlayer &p, std::vector<std::vecto
 
 void Treeocalypse::planting(std::vector<std::vector<int>> &distances) {
 
-
     if (isWinnable(distances)) {
         if (emptyCells.size() > 3) {
             int count = 0;
@@ -79,7 +79,6 @@ void Treeocalypse::planting(std::vector<std::vector<int>> &distances) {
                 std::srand(static_cast<unsigned int>(std::time(nullptr)));
                 int randomIndex = std::rand() % remainingCells.size();
                 std::pair<int, int> randomElement = remainingCells[randomIndex];
-
 
                 if (distances[randomElement.first][randomElement.second] < 10 && std::find(exits.begin(), exits.end(),
                                                                                            randomElement) ==
